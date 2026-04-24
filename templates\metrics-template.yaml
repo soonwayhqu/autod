@@ -1,0 +1,116 @@
+# AUTOD Metrics Template
+# Generated during project initialization, LOCKED after human confirmation
+
+version: "1.0"
+locked: true
+generated_at: null
+confirmed_by: null
+
+# Human expert can modify values below this line before confirmation
+# After confirmation, metrics are LOCKED and cannot be modified
+
+dimensions:
+
+  code_quality:
+    description: "Code quality metrics"
+    metrics:
+      coverage:
+        target: 0.80
+        min: 0.70
+        unit: "percentage"
+        description: "Unit test coverage ≥ 80%"
+
+      lint_score:
+        target: 8
+        min: 6
+        unit: "score"
+        description: "Lint score ≥ 8/10"
+
+      code_review_approval:
+        target: 0.95
+        min: 0.80
+        unit: "percentage"
+        description: "Code review approval rate ≥ 95%"
+
+  architecture:
+    description: "Architecture quality metrics"
+    metrics:
+      circular_dependencies:
+        target: 0
+        min: 0
+        unit: "count"
+        description: "Zero circular dependencies"
+
+      coupling:
+        target: "low"
+        min: "medium"
+        unit: "level"
+        description: "Low coupling between modules"
+
+      interface_stability:
+        target: 0.90
+        min: 0.75
+        unit: "percentage"
+        description: "API interface stability ≥ 90%"
+
+  efficiency:
+    description: "Development efficiency metrics"
+    metrics:
+      phase_completion_rate:
+        target: 0.90
+        min: 0.80
+        unit: "percentage"
+        description: "≥ 90% phases completed on time"
+
+      iteration_ratio:
+        target: 0.85
+        min: 0.70
+        unit: "percentage"
+        description: "≥ 85% improvement success rate"
+
+      context_reuse:
+        target: 0.60
+        min: 0.40
+        unit: "percentage"
+        description: "≥ 60% context reuse from similar tasks"
+
+  reliability:
+    description: "System reliability metrics"
+    metrics:
+      test_pass_rate:
+        target: 1.0
+        min: 0.95
+        unit: "percentage"
+        description: "100% test pass rate"
+
+      bug_rate:
+        target: 0.02
+        min: 0.05
+        unit: "per_kloc"
+        description: "Bug rate ≤ 2 per 1000 LOC"
+
+      regression_rate:
+        target: 0.05
+        min: 0.10
+        unit: "percentage"
+        description: "Regression rate ≤ 5%"
+
+# Metrics that are NOT adjustable after lock
+immutable:
+  - "coverage_min"
+  - "lint_score_min"
+  - "circular_dependencies_max"
+  - "test_pass_rate_min"
+
+# Verification rules
+verification:
+  frequency: "per_phase"
+  comparison: "actual vs target"
+  pass_condition: "actual >= target"
+  fail_condition: "actual < min"
+
+# Lock metadata
+_lock:
+  can_modify: false
+  modification_requires: "human_expert_approval"
+  lock_reason: "Metrics must remain stable for Autoresearch comparison"
