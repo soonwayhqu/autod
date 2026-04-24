@@ -1,0 +1,46 @@
+{
+  "result_id": null,
+  "task_id": null,
+  "phase": null,
+  "timestamp": null,
+  "type": "success|failure",
+
+  "expected_metrics": {
+    "coverage": null,
+    "lint_score": null,
+    "phase_completion_rate": null,
+    "iteration_ratio": null
+  },
+
+  "actual_metrics": {
+    "coverage": null,
+    "lint_score": null,
+    "phase_completion_rate": null,
+    "iteration_ratio": null
+  },
+
+  "metrics_met": {
+    "coverage": false,
+    "lint_score": false,
+    "phase_completion_rate": false,
+    "iteration_ratio": false
+  },
+
+  "gap_analysis": {
+    "summary": null,
+    "primary_gap": null,
+    "severity": "high|medium|low"
+  },
+
+  "revised_approach": {
+    "action": null,
+    "method": null,
+    "specific_changes": []
+  },
+
+  "next_steps": [],
+
+  "confidence": null,
+
+  "decision": "proceed|revise|stop"
+}
