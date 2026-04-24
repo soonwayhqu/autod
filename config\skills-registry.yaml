@@ -1,0 +1,308 @@
+# AUTOD Skills Registry
+# Maps capabilities to GSD, gstack, and Superpowers skills
+
+version: "1.0"
+description: "Three-layer skills registry for AUTOD intelligent routing"
+
+# Layer 1: Infrastructure (GSD)
+infrastructure_layer:
+  name: "GSD - Infrastructure Layer"
+  description: "Core execution engine providing context management, workflow control, state persistence"
+
+  skills:
+    project_init:
+      name: "/gsd-new-project"
+      category: "initialization"
+      description: "Project initialization with questions, research, requirements, roadmap"
+      invoke: "/gsd-new-project"
+
+    discuss_phase:
+      name: "/gsd-discuss-phase"
+      category: "discussion"
+      description: "Phase discussion to capture implementation decisions"
+      invoke: "/gsd-discuss-phase"
+
+    plan_phase:
+      name: "/gsd-plan-phase"
+      category: "planning"
+      description: "Phase planning with research, plan creation, and verification"
+      invoke: "/gsd-plan-phase"
+
+    execute_phase:
+      name: "/gsd-execute-phase"
+      category: "execution"
+      description: "Execute plans in dependency waves with atomic commits"
+      invoke: "/gsd-execute-phase"
+
+    verify_work:
+      name: "/gsd-verify-work"
+      category: "verification"
+      description: "User acceptance testing and verification"
+      invoke: "/gsd-verify-work"
+
+    ship:
+      name: "/gsd-ship"
+      category: "release"
+      description: "Create PR, run tests, audit coverage, push"
+      invoke: "/gsd-ship"
+
+    state_persistence:
+      name: ".planning/"
+      category: "state"
+      description: "State management directory"
+      files:
+        - "STATE.md"
+        - "PROJECT.md"
+        - "ROADMAP.md"
+        - "REQUIREMENTS.md"
+
+# Layer 2: Expert Roles (gstack)
+methodology_layer_gstack:
+  name: "gstack - Expert Roles"
+  description: "Expert role system providing specialized perspectives"
+
+  roles:
+    office_hours:
+      name: "office-hours"
+      category: "product"
+      description: "Product discussion with forcing questions"
+      invoke: "/office-hours"
+      triggers:
+        - "requirement_clarification"
+        - "pain_point_analysis"
+        - "scope_definition"
+
+    ceo_review:
+      name: "plan-ceo-review"
+      category: "strategy"
+      description: "Strategic review for scope and direction"
+      invoke: "/plan-ceo-review"
+      triggers:
+        - "scope_expansion"
+        - "scope_reduction"
+        - "strategic_alignment"
+
+    eng_review:
+      name: "plan-eng-review"
+      category: "architecture"
+      description: "Engineering review for architecture and technical decisions"
+      invoke: "/plan-eng-review"
+      triggers:
+        - "architecture_design"
+        - "technical_stack_selection"
+        - "data_flow_design"
+
+    design_review:
+      name: "plan-design-review"
+      category: "design"
+      description: "Design review for UI/UX quality"
+      invoke: "/plan-design-review"
+      triggers:
+        - "ui_design"
+        - "ux_interaction"
+        - "visual_consistency"
+
+    qa_lead:
+      name: "qa"
+      category: "testing"
+      description: "QA lead for automated testing and bug finding"
+      invoke: "/qa"
+      triggers:
+        - "test_execution"
+        - "bug_discovery"
+        - "regression_testing"
+
+    code_reviewer:
+      name: "review"
+      category: "code_review"
+      description: "Code review for bugs and quality issues"
+      invoke: "/review"
+      triggers:
+        - "pre_release_review"
+        - "quality_audit"
+
+    security_officer:
+      name: "cso"
+      category: "security"
+      description: "Security audit with OWASP + STRIDE"
+      invoke: "/cso"
+      triggers:
+        - "security_sensitive"
+        - "pre_deployment_audit"
+
+    release_engineer:
+      name: "ship"
+      category: "release"
+      description: "Release engineer for deployment"
+      invoke: "/ship"
+      triggers:
+        - "release_preparation"
+
+    deploy_engineer:
+      name: "land-and-deploy"
+      category: "deployment"
+      description: "Deployment engineer for production launch"
+      invoke: "/land-and-deploy"
+      triggers:
+        - "production_deployment"
+
+    experience_manager:
+      name: "learn"
+      category: "experience"
+      description: "Experience accumulation and pattern extraction"
+      invoke: "/learn"
+      triggers:
+        - "post_completion"
+
+# Layer 3: Methodology (Superpowers)
+methodology_layer_superpowers:
+  name: "Superpowers - Development Methodology"
+  description: "Methodology enforcement for TDD, planning, and code quality"
+
+  skills:
+    brainstorming:
+      name: "brainstorming"
+      category: "design"
+      description: "Socratic design refinement through questions"
+      invoke: "brainstorming"
+      triggers:
+        - "design_phase"
+        - "requirement_exploration"
+
+    writing_plans:
+      name: "writing-plans"
+      category: "planning"
+      description: "Detailed implementation plans from design"
+      invoke: "writing-plans"
+      triggers:
+        - "plan_creation"
+
+    subagent_development:
+      name: "subagent-driven-development"
+      category: "execution"
+      description: "Parallel subagent execution with two-stage review"
+      invoke: "subagent-driven-development"
+      triggers:
+        - "parallel_execution"
+
+    tdd:
+      name: "test-driven-development"
+      category: "testing"
+      description: "RED-GREEN-REFACTOR cycle enforcement"
+      invoke: "test-driven-development"
+      triggers:
+        - "tdd_required"
+        - "test_first_required"
+
+    code_review:
+      name: "requesting-code-review"
+      category: "review"
+      description: "Pre-review checklist and severity reporting"
+      invoke: "requesting-code-review"
+      triggers:
+        - "pre_code_review"
+
+    branch_completion:
+      name: "finishing-a-development-branch"
+      category: "completion"
+      description: "Branch completion with merge/PR decision"
+      invoke: "finishing-a-development-branch"
+      triggers:
+        - "branch_completion"
+
+# Layer 4: Autoresearch (Modified)
+autoresearch_layer:
+  name: "Autoresearch - Self-Improvement Loop"
+  description: "Modified Autoresearch with metrics comparison and human intervention"
+
+  invocation:
+    trigger: "after_each_phase_completion"
+    mandatory: true
+    output_required: true
+
+  components:
+    data_collection:
+      name: "collect"
+      description: "Collect task data and execution results"
+      action: "Gather actual_metrics from phase execution"
+
+    comparison:
+      name: "compare"
+      description: "Compare results vs LOCKED metrics"
+      action: "Load metrics.json, calculate delta for each metric"
+
+    analysis:
+      name: "analyze"
+      description: "Generate structured analysis output"
+      action: "Populate result-template.json with comparison"
+
+    decision:
+      name: "decision"
+      description: "Decision: proceed|revise|stop"
+      rules:
+        all_met: "proceed"
+        some_not_met: "revise"
+        confidence_below_0.7: "pause"
+        max_iterations_reached: "stop"
+
+    improvement:
+      name: "improve"
+      description: "Generate improved approach (metrics CANNOT change)"
+      action: "Create revised_approach without modifying LOCKED metrics"
+
+    storage:
+      name: "store"
+      description: "Store results to JSON files in .autod/ directory"
+      output_path: "{cwd}/.autod/{task_id}/results.json"
+
+  constraints:
+    metrics_locked: true
+    max_iterations: 3
+    human_intervention_confidence: 0.7
+    cannot_modify: "LOCKED metrics"
+
+# Capability Mapping
+capability_matrix:
+  task_understanding:
+    - brainstorming
+    - office-hours
+
+  project_initialization:
+    - /gsd-new-project
+
+  architecture_design:
+    - plan-eng-review
+    - /gsd-plan-phase
+    - writing-plans
+
+  product_strategy:
+    - plan-ceo-review
+    - office-hours
+
+  design_quality:
+    - plan-design-review
+
+  code_implementation:
+    - /gsd-execute-phase
+    - subagent-driven-development
+
+  testing:
+    - /gsd-verify-work
+    - qa
+    - test-driven-development
+
+  code_quality:
+    - review
+    - requesting-code-review
+
+  security:
+    - cso
+
+  release:
+    - /gsd-ship
+    - land-and-deploy
+    - finishing-a-development-branch
+
+  experience:
+    - learn
+    - autoresearch-loop
