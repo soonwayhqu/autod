@@ -1,0 +1,241 @@
+# AUTOD Smart Routing Rules
+# Defines when and how to invoke skills based on context
+
+version: "1.0"
+description: "Intelligent routing rules for AUTOD skill orchestration"
+
+# Critical Decision Points
+critical_decision_points:
+  - name: "architecture_design"
+    trigger: "phase_start AND involves_system_architecture"
+    pause_for_human: true
+    confidence_threshold: 0.7
+    invoke:
+      - "plan-eng-review"
+      - "plan-ceo-review"
+
+  - name: "technical_stack_selection"
+    trigger: "involves_major_technical_decisions"
+    pause_for_human: true
+    confidence_threshold: 0.7
+    invoke:
+      - "plan-eng-review"
+
+  - name: "scope_change"
+    trigger: "major_scope_modification"
+    pause_for_human: true
+    confidence_threshold: 0.7
+    invoke:
+      - "office-hours"
+      - "plan-ceo-review"
+
+  - name: "release_decision"
+    trigger: "preparing_to_deploy_production"
+    pause_for_human: true
+    confidence_threshold: 0.7
+    invoke:
+      - "ship"
+      - "cso"
+
+  - name: "metrics_generation"
+    trigger: "project_initialization"
+    pause_for_human: true
+    confidence_threshold: null
+    invoke:
+      - "autod-metrics-generator"
+    human_action: "confirm_or_modify_metrics"
+
+# Phase-Based Routing
+phase_routing:
+  task_start:
+    description: "Task understanding phase"
+    auto_invoke:
+      - "brainstorming"
+      - "office-hours"
+    then:
+      - "/gsd-new-project"
+    output:
+      - "confirmed_requirements"
+      - "locked_metrics"
+
+  planning_phase:
+    description: "Planning and architecture phase"
+    context_checks:
+      - if: "architecture_involved"
+        invoke: "plan-eng-review"
+      - if: "product_direction_involved"
+        invoke: "plan-ceo-review"
+      - if: "ui_ux_involved"
+        invoke: "plan-design-review"
+    always_invoke:
+      - "/gsd-plan-phase"
+      - "writing-plans"
+
+  execution_phase:
+    description: "Code implementation phase"
+    auto_invoke:
+      - "/gsd-execute-phase"
+    parallel:
+      - "subagent-driven-development"
+    conditional:
+      - if: "tdd_required"
+        invoke: "test-driven-development"
+    then:
+      - "review"
+      - "requesting-code-review"
+      - "autoresearch-loop"
+
+  verification_phase:
+    description: "Testing and verification phase"
+    auto_invoke:
+      - "/gsd-verify-work"
+      - "qa"
+    conditional:
+      - if: "security_sensitive"
+        invoke: "cso"
+      - if: "has_code_changes"
+        invoke: "review"
+    then:
+      - "autoresearch-loop"
+
+  release_phase:
+    description: "Release and deployment phase"
+    auto_invoke:
+      - "/gsd-ship"
+      - "land-and-deploy"
+      - "learn"
+
+# Autoresearch Loop Routing
+autoresearch_routing:
+  loop_trigger:
+    description: "Triggered after each phase completion"
+
+  decision_tree:
+    - name: "compare_metrics"
+      description: "Compare actual results vs locked metrics"
+
+    - name: "decision"
+      branches:
+        - condition: "all_metrics_met"
+          decision: "proceed"
+          next: "next_phase"
+
+        - condition: "some_metrics_not_met"
+          decision: "revise"
+          next: "generate_improvement"
+          constraints:
+            cannot_modify: "metrics"
+
+        - condition: "confidence_below_threshold"
+          decision: "pause"
+          next: "human_intervention"
+          trigger: "pause_for_human"
+
+  improvement_generation:
+    description: "Generate improved approach without changing metrics"
+    output_format: "json"
+    required_fields:
+      - "action"
+      - "method"
+      - "estimated_improvement"
+    prohibited_fields:
+      - "metrics_modification"
+
+  max_iterations: 3
+  on_max_iterations_reached:
+    decision: "escalate"
+    action: "notify_human_expert"
+
+# Smart Detection Patterns
+detection_patterns:
+  architecture_keywords:
+    - "architecture"
+    - "system design"
+    - "microservice"
+    - "API design"
+    - "data model"
+    - "component structure"
+
+  product_direction_keywords:
+    - "product vision"
+    - "user experience"
+    - "market fit"
+    - "feature priority"
+    - "roadmap"
+
+  design_keywords:
+    - "UI design"
+    - "user interface"
+    - "visual design"
+    - "layout"
+    - "component design"
+
+  security_keywords:
+    - "authentication"
+    - "authorization"
+    - "encryption"
+    - "security"
+    - "privacy"
+    - "PII"
+
+  tdd_keywords:
+    - "test driven"
+    - "TDD"
+    - "test first"
+    - "RED GREEN REFACTOR"
+
+# Confidence Calculation
+confidence_rules:
+  factors:
+    - name: "context_clarity"
+      weight: 0.3
+      indicators:
+        - "clear_requirements"
+        - "defined_scope"
+        - "known_constraints"
+
+    - name: "technical_complexity"
+      weight: 0.2
+      indicators:
+        - "familiar_technology"
+        - "standard_patterns"
+        - "documented_requirements"
+
+    - name: "historical_success"
+      weight: 0.3
+      indicators:
+        - "similar_task_completed"
+        - "pattern_recognized"
+        - "experience_available"
+
+    - name: "uncertainty"
+      weight: 0.2
+      indicators:
+        - "ambiguous_requirements"
+        - "new_domain"
+        - "conflicting_priorities"
+
+  threshold: 0.7
+  below_threshold_action: "pause_for_human"
+
+# Execution Mode Configuration
+execution_modes:
+  fully_autonomous:
+    description: "Execute without pausing (use with caution)"
+    pause_at_critical: false
+    pause_at_confidence_below: false
+
+  collaborative:
+    description: "Default mode - pause at critical decisions"
+    pause_at_critical: true
+    pause_at_confidence_below: true
+    confidence_threshold: 0.7
+
+  human_led:
+    description: "Human drives, AI assists"
+    pause_at_critical: true
+    pause_at_confidence_below: false
+    require_human_approval: true
+
+# Default Mode
+default_mode: "collaborative"
